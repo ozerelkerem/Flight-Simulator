@@ -74,7 +74,7 @@ public class Test {
 		btnPanel.add(btnAddAirlinesComp);
 		btnPanel.add(btnAddCity);
 		btnPanel.add(btnAddAirport);
-		
+		//btnPanel
 		mapPanel.setSize(window.getSize().width-btnPanel.getSize().width-50,window.getSize().height);
 		mapPanel.setPreferredSize(mapPanel.getSize());
 	
