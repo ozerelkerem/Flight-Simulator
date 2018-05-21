@@ -26,60 +26,67 @@ import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import Lib.Center;
+import Lib.City;
+import Lib.MapPoint;
+
 public class pnlAddCountry extends JPanel{
 
-	private JButton btnSave;
+	private Center CNTR;
+	public static JButton btnSave;
     private JLabel lblCountryName;
     private JTextField txtCountry;
     private JLabel lblPos;
-    private JTextField posX;
-    private JTextField posY;
-    public pnlAddCountry() {
-        btnSave = new JButton ("Kaydet");
-        lblCountryName = new JLabel ("Þehir Adý:");
-        txtCountry = new JTextField (5);
-        lblPos = new JLabel ("Koordinat(Harita Üzerinden Seçim Yapýn):");
-        posX = new JTextField (5);
-        posY = new JTextField (5);
+    public static JTextField posX;
+    public static JTextField posY;
 
-        btnSave.setEnabled(false);
-        posX.setEditable(false);
-        posY.setEditable(false);
-        setPreferredSize (new Dimension (944, 574));
-        setLayout (null);
-        add(btnSave);
-        add(lblCountryName);
-        add(txtCountry);
-        add(lblPos);
-        add(posX);
-        add(posY);
+	public pnlAddCountry(Center cNTR) {
+		// TODO Auto-generated constructor stub
+		this.CNTR = cNTR;
+		
+		   btnSave = new JButton ("Kaydet");
+	        lblCountryName = new JLabel ("Þehir Adý:");
+	        txtCountry = new JTextField (5);
+	        lblPos = new JLabel ("Koordinat(Harita Üzerinden Seçim Yapýn):");
+	        posX = new JTextField (5);
+	        posY = new JTextField (5);
+	        btnSave.setEnabled(false);
+	        posX.setEditable(false);
+	        posY.setEditable(false);
+	        setPreferredSize (new Dimension (944, 574));
+	        setLayout (null);
+	        add(btnSave);
+	        add(lblCountryName);
+	        add(txtCountry);
+	        add(lblPos);
+	        add(posX);
+	        add(posY);
+	        btnSave.setBounds (245, 100, 100, 20);
+	        lblCountryName.setBounds (15, 15, 60, 20);
+	        txtCountry.setBounds (75, 15, 100, 25);
+	        lblPos.setBounds (15, 50, 245, 25);
+	        posX.setBounds (250, 50, 45, 25);
+	        posY.setBounds (300, 50, 45, 25);
 
-        btnSave.setBounds (245, 100, 100, 20);
-        lblCountryName.setBounds (15, 15, 60, 20);
-        txtCountry.setBounds (75, 15, 100, 25);
-        lblPos.setBounds (15, 50, 245, 25);
-        posX.setBounds (250, 50, 45, 25);
-        posY.setBounds (300, 50, 45, 25);
 
-
-        
-        //****************Save Butonu Click Event***********************
-        btnSave.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				posX.getText();
-			 	posY.getText();
+	        
+	        //****************Save Butonu Click Event***********************
+	        btnSave.addActionListener(new ActionListener() {
 				
-			}
-		});
-        //**************************************************************         
-       /* lblMap.addMouseListener(new MouseAdapter() {
-        	public void mouseClicked(MouseEvent e) {
-        		posX.setText(String.valueOf(e.getX()));
-        		posY.setText(String.valueOf(e.getY()));
-        		btnSave.setEnabled(true);
-        	}
-		});   */
-    }
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int x = Integer.parseInt(posX.getText());
+					int y = Integer.parseInt(posY.getText());
+				 	CNTR.addCity(new City(txtCountry.getText(), null, null, new MapPoint(x, y)));
+				}
+			});
+	        //**************************************************************         
+	       /* lblMap.addMouseListener(new MouseAdapter() {
+	        	public void mouseClicked(MouseEvent e) {
+	        		posX.setText(String.valueOf(e.getX()));
+	        		posY.setText(String.valueOf(e.getY()));
+	        		btnSave.setEnabled(true);
+	        	}
+			});   */
+	}
 }

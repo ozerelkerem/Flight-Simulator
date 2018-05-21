@@ -1,11 +1,17 @@
 package GUI;
 import java.awt.Dimension;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.swing.*;
+
+import Lib.Center;
+import Lib.City;
 public class pnlAddAirPort extends JPanel {
+	private Center CNTR;
 	private JComboBox cmbBoxCities;
     private JLabel lblSelectCountry;
     private JLabel lblAirPort;
@@ -16,10 +22,11 @@ public class pnlAddAirPort extends JPanel {
     private JLabel lblLandingDelay;
     private JButton btnSave;
 
-    public pnlAddAirPort()
-    {
-    	ArrayList<String> citiesList=new ArrayList<>(); // ArrayListini txt dosyadan doldur...
-        cmbBoxCities = new JComboBox<>();
+
+	public pnlAddAirPort(Center cNTR) {
+		// TODO Auto-generated constructor stub
+		this.CNTR = cNTR;
+		cmbBoxCities = new JComboBox<>();
         lblSelectCountry = new JLabel ("Þehir Seç:");
         lblAirPort = new JLabel ("Havalimaný Adý:");
         txtAirPort = new JTextField (5);
@@ -29,7 +36,6 @@ public class pnlAddAirPort extends JPanel {
         lblLandingDelay = new JLabel ("Ýniþ Gecikmesi:");
         btnSave = new JButton ("Kaydet");
         cmbBoxCities=new JComboBox<>();
-        cmbBoxCities.setModel(new DefaultComboBoxModel<>(citiesList.toArray()));
         setPreferredSize (new Dimension (755, 540));
         setLayout (null);
         add(cmbBoxCities);
@@ -46,11 +52,10 @@ public class pnlAddAirPort extends JPanel {
         lblAirPort.setBounds (15, 55, 100, 25);
         txtAirPort.setBounds (145, 50, 100, 25);
         txtTakeOffDelay.setBounds (145, 95, 100, 25);
-        txtLandingDelay.setBounds (145, 145, 100, 25);
         lblTakeOffDelay.setBounds (15, 95, 120, 25);
-        lblLandingDelay.setBounds (15, 145, 100, 25);
-        btnSave.setBounds (145, 195, 100, 25);
-        
+        btnSave.setBounds(350, 80, 100, 20);
+        txtLandingDelay.setBounds (420, 20, 100, 20);
+        lblLandingDelay.setBounds (305, 20, 140, 20);
         //***************save click event*************
         btnSave.addActionListener(new ActionListener() {
 			
@@ -60,6 +65,14 @@ public class pnlAddAirPort extends JPanel {
 				
 			}
 		});
-    }
+	}
+	public void update()
+	{
+	    ArrayList<String> strings = new ArrayList<>();
+        for (City c : CNTR.getCities()) {
+            strings.add(c.toString());
+        }
+        cmbBoxCities.setModel(new DefaultComboBoxModel<>(strings.toArray()));
+	}
     
 }
