@@ -76,14 +76,21 @@ suspend.addActionListener(new ActionListener() {
                 }
 
                 String    dialogResult = JOptionPane.showInputDialog(null, "Seçili satırdaki uçuşu kaç dakika ertelemek istersiniz?");
-                Flight f = Flight.getFlightFromID(CNTR.getFlights(), (String) tbFlights.getValueAt(tbFlights.getSelectedRow(), 0));
                 try {
-                    CNTR.addDelayToFlight(f, Integer.valueOf(dialogResult));
-                    JOptionPane.showMessageDialog(null, tbFlights.getValueAt(tbFlights.getSelectedRow(), 0) + " nolu uçuş ertelendi");
-                } catch (FlightException e1) {
-                    // TODO Auto-generated catch block
-                    JOptionPane.showMessageDialog(null, e1.getMessage());
-                }
+                    int delay = Integer.valueOf(dialogResult);
+                    Flight f = Flight.getFlightFromID(CNTR.getFlights(), (String) tbFlights.getValueAt(tbFlights.getSelectedRow(), 0));
+                    try {
+                        CNTR.addDelayToFlight(f, delay);
+                        JOptionPane.showMessageDialog(null, tbFlights.getValueAt(tbFlights.getSelectedRow(), 0) + " nolu uçuş ertelendi");
+                    } catch (FlightException e1) {
+                        // TODO Auto-generated catch block
+                        JOptionPane.showMessageDialog(null, e1.getMessage());
+                    }
+				} catch (NumberFormatException nfe) {
+					JOptionPane.showMessageDialog(null, "geçersiz input");
+				}
+          
+                
 
             }
         });
