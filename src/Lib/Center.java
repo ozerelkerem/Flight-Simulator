@@ -118,7 +118,7 @@ public class Center implements Serializable
 			if(fl.getID().equals(f.getID()))
 				throw new FlightException("Böyle bir uçuþ idsi zaten var.");
 		}
-		if(f.getDepDate().getTime() < new Date().getTime())
+		if(f.getDepDate().getTime() < getTimeNOW().getTime())
 			throw new FlightException("Kalkýþ tarihi geçmiþ bir tarih olamaz");
 		flights.add(f);
 	}
@@ -201,15 +201,16 @@ public class Center implements Serializable
 		} 
 	}
 	
-	public void startSimulation(Center c)
+	public void startSimulation()
 	{
 		timeController.Work = true;
 		timeController.start();
 		timePrinter.start();
+		System.out.println(mw.getMjp());
 		new Thread(mw.getMjp()).start();
 	}
 	
-	public void stopSimulation(Center c)
+	public void stopSimulation()
 	{
 		timeController.Work = false;
 		timePrinter.stop();

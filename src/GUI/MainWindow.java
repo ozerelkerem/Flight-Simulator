@@ -1,18 +1,16 @@
 package GUI;
 
 import java.awt.HeadlessException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.awt.event.*;
+import java.io.*;
 
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.*;
+import javax.swing.event.*;
 
-import Lib.Center;
+import java.awt.*;
+import Lib.*;
 
-public class MainWindow extends JFrame
+public class MainWindow extends JFrame implements KeyListener
 {
 	private pnlMap mjp;
 	private JTabbedPane tb;
@@ -32,7 +30,7 @@ public class MainWindow extends JFrame
 	public MainWindow(Center CNTR) throws IOException
 	{
 		getContentPane().setLayout(null);
-		pnlMap mjp = new pnlMap("map.jpg",pnlAddCountry.posX,pnlAddCountry.posY,CNTR);
+		mjp = new pnlMap("map.jpg",pnlAddCountry.posX,pnlAddCountry.posY,CNTR);
 	    mjp.setLocation(0, 400);
 	    mjp.setBounds(0,150, 1920, 1013);
 		JTabbedPane tb=new JTabbedPane();
@@ -47,12 +45,42 @@ public class MainWindow extends JFrame
 	    tb.addTab("Havalimaný Þirket Ekle", new pnlAddNewCo(CNTR));
 	    tb.addTab("Þirkete Uçak Ekle", p3);
 	    tb.addTab("Uçuþ Ekle", p4);
+	    tb.addTab("Raporlar",null);
+	    /**/
+	    JMenuBar menuBar=new JMenuBar();
+        JMenuItem start=new JMenuItem("Simülasyon Baþlat");
+        JMenuItem stop=new JMenuItem("Simülasyon Durdur");
+        start.setBackground(Color.GREEN);
+        stop.setBackground(Color.RED);
+        start.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	CNTR.startSimulation();
+            	JOptionPane.showMessageDialog(null, "Simülasyon baþlatýldý.");
+            
+            }
+            
+        });
+        stop.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	CNTR.stopSimulation();
+            	JOptionPane.showMessageDialog(null, "Simülasyon durduldu.");
+            }
+        });
+        menuBar.add(start);
+        menuBar.add(stop);
+        setJMenuBar(menuBar);
+	    
+	    /**/
 	    getContentPane().add(tb);
 	    getContentPane().add(mjp);
 	    pack();
 	    setExtendedState(JFrame.MAXIMIZED_BOTH); 
 	    setVisible (true);
-
+	    System.out.println(getBounds() + "ehere");
 	    tb.addChangeListener(new ChangeListener() {
 			
 			@Override
@@ -62,9 +90,38 @@ public class MainWindow extends JFrame
 				p3.update();
 				p4.update();
 				Center.saveMyCenter(CNTR);
-				
+				if(tb.getSelectedIndex()==5) {
+                    pnlFlightReport p=new pnlFlightReport(CNTR);
+                    tb.setSelectedIndex(0);
+                
+				}
 			}
-		});;
+		});
+	   
+	}
+
+
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(null, "deneme");
+	}
+
+
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(null, "deneme2");
+	}
+
+
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(null, "deneme3");
 	}
 	
 	

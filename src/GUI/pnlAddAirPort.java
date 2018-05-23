@@ -64,8 +64,9 @@ public class pnlAddAirPort extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				City c = (City) cmbBoxCities.getSelectedItem();
-				
-						c.addAirport(new Airport(txtAirPort.getText(), c, new ControlTower(Integer.parseInt(txtLandingDelay.getText()), Integer.parseInt(txtTakeOffDelay.getText()))));
+				ControlTower ct = new ControlTower(Integer.parseInt(txtLandingDelay.getText()), Integer.parseInt(txtTakeOffDelay.getText()));
+				c.addAirport(new Airport(txtAirPort.getText(), c, ct));
+				Center.timeController.addTowerToPool(ct);
 					//	JOptionPane.showMessageDialog(null, c.getAirports());
 						
 			}

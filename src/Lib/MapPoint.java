@@ -40,6 +40,11 @@ public class MapPoint implements Serializable
 		this.y = y;
 	}
 	
+	public MapPoint plus(float x, float y)
+	{
+		return new MapPoint(getX()+x, getY()+y);
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		MapPoint p = (MapPoint )obj;

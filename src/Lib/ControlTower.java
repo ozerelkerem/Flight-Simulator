@@ -64,12 +64,12 @@ public class ControlTower implements Serializable,Runnable
 
 	public boolean isAvailableForLanding()
 	{
-		return (landingTimer < 0) ? true : false;
+		return (landingTimer <= 0) ? true : false;
 	}
 	
 	public boolean isAvailableForTakeOff()
 	{
-		return (takeoffTimer< 0) ? true : false;
+		return (takeoffTimer<= 0) ? true : false;
 	}
 
 	public void Land()
@@ -83,7 +83,7 @@ public class ControlTower implements Serializable,Runnable
 	}
 
 	public void run() {
-		while(takeoffTimer > 0 || landingTimer > 0)
+		while(true)
 		{
 			if(takeoffTimer > 0)
 				takeoffTimer--;

@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -21,6 +22,15 @@ public class pnlMap extends JPanel implements Runnable {
 	Center CNTR;
 	private BufferedImage backgroundImage;
 	private BufferedImage planeIm;
+	private BufferedImage towerIm;
+	private JLabel flightlayer = new JLabel() {
+		@Override
+		public void paintComponent(Graphics g) {
+			// TODO Auto-generated method stub
+			super.paintComponent(g);
+			drawFlights(g);
+		}
+	};
 
 	  // Some code to initialize the background image.
 	  // Here, we use the constructor to load the image. This
@@ -29,12 +39,18 @@ public class pnlMap extends JPanel implements Runnable {
 		  this.CNTR = c;
 	    backgroundImage = ImageIO.read(new File(fileName));
 	    planeIm = ImageIO.read(new File("plane.png"));
+	    towerIm = ImageIO.read(new File("tower.png"));
+	    setLayout(null);
+	    flightlayer.setBounds(0,0, 1936, 1013);
+	
+	    add(flightlayer);
+	
 	   this.addMouseListener(new MouseAdapter() {
 		   public void mouseClicked(MouseEvent e) {
 			   pnlAddCountry.posX.setText(String.valueOf(e.getX()));
 			   pnlAddCountry.posY.setText(String.valueOf(e.getY()));
 			   pnlAddCountry.btnSave.setEnabled(true);
-			   
+			  // flightlayer.getGraphics().drawString("asdasdasdasdasdasdasd", e.getX(), e.getY());
 		   }
 	});
 	    
@@ -52,16 +68,20 @@ public class pnlMap extends JPanel implements Runnable {
 	  {
 		  for(City c : CNTR.getCities())
 		  {
-			  g.drawOval((int)c.getMp().getX()+3,(int)c.getMp().getY()+3,10,10);
-			  g.drawString(c.getName(), (int)c.getMp().getX(), (int)c.getMp().getY());
+			
+			 drawImage(g, towerIm, c.getMp().plus(-16, -16), 0, 0, 0);
+			 MapPoint m = c.getMp().plus(-16, -16);
+			 g.drawString(c.getName(), (int)m.getX(), (int)m.getY());
+			  
 			//  drawPlane(g, c.getMp(), 0);
 	
 		  }
+		
 	  }
 	  
 	  public void drawImage(Graphics g,BufferedImage im,MapPoint mp,double d,float height,float width)
 	  {
-		  double rotationRequired = Math.toRadians (d);
+		  double rotationRequired = d;
 		  double locationX = im.getWidth() / 2;
 		  double locationY = im.getHeight() / 2;
 		  AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
@@ -76,12 +96,23 @@ public class pnlMap extends JPanel implements Runnable {
 		  drawImage(g, planeIm, new MapPoint(mp.getX()-16, mp.getY()-16), d, 32, 32);
 	  }
 	  
-	  public void drawFlights()
+	  public void drawFlights(Graphics g)
 	  {
+		  
 		  for(Flight f :CNTR.getFlights())
 		  {
 			  if(f.getStatus() == FlightStatus.OnAir)
-				  drawPlane(getGraphics(), f.getLocation(CNTR.getTimeNOW()), f.getRotation());
+			  {
+				  drawPlane(g, f.getLocation(CNTR.getTimeNOW()), f.getRotation());
+				  System.out.println(f.getLocation(CNTR.getTimeNOW()).getX() + " - " + f.getLocation(CNTR.getTimeNOW()).getY());
+				  System.out.println(f.getRotation());
+				  System.out.println(f.getID());
+				  MapPoint mp1,mp2;
+				  mp1 = f.getArrAirport().getCity().getMp();
+				  mp2 = f.getDepAirport().getCity().getMp();
+				  g.drawLine((int)mp1.getX(), (int)mp1.getY(), (int)mp2.getX(), (int)mp2.getY());
+			  }
+				  
 		  }
 	  }
 
@@ -89,7 +120,15 @@ public class pnlMap extends JPanel implements Runnable {
 	public void run() {
 		while(Center.timeController.Work)
 		{
-			drawFlights();
+			flightlayer.repaint();
+			
+			
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 	}

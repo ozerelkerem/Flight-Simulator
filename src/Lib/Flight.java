@@ -1,6 +1,7 @@
 package Lib;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Vector;
 
 public class Flight implements Serializable
 {
@@ -113,16 +114,35 @@ public class Flight implements Serializable
 		y1=getArrAirport().getCity().getMp().getY();
 		y2=getDepAirport().getCity().getMp().getY();
 		
-		return (Math.atan2(y2-y1, x2-x1) *180 *Math.PI);
+		return Helper.getAngle(getDepAirport().getCity().getMp(),getArrAirport().getCity().getMp());
 	}
 	
 	public MapPoint getLocation(Date d)
 	{
 		MapPoint mp1 = new MapPoint(0, 0);
-		mp.setX((float) ((d.getTime() - depDate.getTime()) * Math.sin(getRotation())));
-		mp.setY((float) ((d.getTime() - depDate.getTime()) * Math.cos(getRotation())));
-		return mp1;
+		double speed = (double) ((d.getTime() - depDate.getTime()))/10000000;
+		double distance = Helper.distance2D(getArrAirport().getCity().getMp(), getDepAirport().getCity().getMp());
+		mp1.setX((float) (distance * speed * Math.cos(getRotation())));
+		mp1.setY((float) (distance * speed * Math.sin(getRotation())));
+		MapPoint mp2 = getDepAirport().getCity().getMp().plus(mp1.getX(), mp1.getY());
+		return mp2;
 	}
+	
+	public Vector<String> toVector()
+    {
+        Vector<String> v = new Vector<>();
+        v.add(getID());
+        v.add(getDepAirport().getCity().toString());
+        v.add(getDepAirport().toString());
+        v.add(getArrAirport().getCity().toString());
+        v.add(getArrAirport().toString());
+        v.add(depDate.toString());
+        v.add(arrDate == null ? "" :arrDate.toString());
+        v.add(status.toString());
+        return v;
+    }
+	
+
 	
 	
 	

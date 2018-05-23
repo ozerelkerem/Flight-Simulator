@@ -44,7 +44,8 @@ public class pnlAddFlight extends JPanel{
     private JLabel jcomp11;
     private JLabel jcomp12;
     private JComboBox cmbAirPortList2;
-
+    private JLabel lblFlightID;
+    private JTextField txtFlightID;
     private DateTimePicker DateLand = new DateTimePicker();
 
 
@@ -52,10 +53,11 @@ public class pnlAddFlight extends JPanel{
 	public pnlAddFlight(Center cNTR2) {
 		// TODO Auto-generated constructor stub
 		this.CNTR = cNTR2;
-        lblAirportCo = new JLabel ("Þirket Adý:");
+		lblAirportCo = new JLabel ("Þirket Adý");
         btnSave = new JButton ("Kaydet");
         cmbCoList=new JComboBox<>();
-       
+        lblFlightID=new JLabel("Uçuþ ID:");
+        txtFlightID=new JTextField();
         lblPlane = new JLabel ("Uçak Model:");
         cmbPlaneList = new JComboBox<>();
         cmbFrom = new JComboBox<>();
@@ -87,10 +89,12 @@ public class pnlAddFlight extends JPanel{
         add(jcomp12);
         add(cmbAirPortList2);
         add(lblDateArr);
+        add(lblFlightID);
+        add(txtFlightID);
         lblDateArr.setBounds(750, 25, 100, 25);
         DateLand.setBounds(750, 55, 240, 30);
         lblAirportCo.setBounds(515, 25, 100, 25);
-        btnSave.setBounds(1000, 35, 100, 25);
+        btnSave.setBounds(1005, 60, 100, 25);
         cmbCoList.setBounds(615, 25, 100, 25);
         lblPlane.setBounds(515, 55, 100, 25);
         cmbPlaneList.setBounds(615, 55, 100, 25);
@@ -102,6 +106,8 @@ public class pnlAddFlight extends JPanel{
         jcomp11.setBounds(265, 25, 100, 25);
         jcomp12.setBounds(265, 65, 100, 25);
         cmbAirPortList2.setBounds(355, 65, 100, 25);
+        txtFlightID.setBounds (1005, 15, 100, 25);
+        lblFlightID.setBounds (945, 15, 100, 25);
         
     	fillCities();
     	
@@ -112,6 +118,16 @@ public class pnlAddFlight extends JPanel{
 
 				City c = ((City)cmbFrom.getSelectedItem());
 						cmbAirportList.setModel(new DefaultComboBoxModel<>(c.getAirports().toArray()));
+				
+			}
+		});
+    	
+    	cmbTo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				City c = ((City)cmbTo.getSelectedItem());
+				cmbAirPortList2.setModel(new DefaultComboBoxModel<>(c.getAirports().toArray()));
 				
 			}
 		});
@@ -135,7 +151,7 @@ public class pnlAddFlight extends JPanel{
 				Instant ldt = DateLand.getDateTimeStrict().toInstant(dt.atZone(ZoneId.systemDefault()).getOffset());
 				Date out = Date.from(ldt);
 
-				Flight fli = new Flight("2",a1,a2,out,plane,FlightStatus.OnGround);
+				Flight fli = new Flight("3",a1,a2,out,plane,FlightStatus.OnGround);
 				
 				try {
 					CNTR.addFlight(fli);

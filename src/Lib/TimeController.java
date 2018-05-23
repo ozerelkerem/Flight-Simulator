@@ -1,21 +1,31 @@
 package Lib;
 
 import java.io.Serializable;
+import java.nio.channels.NetworkChannel;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TimeController extends Thread
 {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	
+
+	private ExecutorService pool = Executors.newCachedThreadPool();
 	private Center CNTR;
 	public boolean Work = false;
 	
 	public TimeController(Center cNTR) {
 		super();
 		CNTR = cNTR;
+		for(City c  : CNTR.getCities())
+		{
+			for(Airport a : c.getAirports())
+			{
+				addTowerToPool(a.getcTower());
+			}
+		}
 	}
 
 
@@ -28,6 +38,10 @@ public class TimeController extends Thread
 		CNTR = cNTR;
 	}
 
+	public void addTowerToPool(ControlTower c)
+	{
+		pool.execute(c);
+	}
 
 	public void run()
 	{
@@ -47,6 +61,8 @@ public class TimeController extends Thread
 			//flightworks
 			for(Flight f : CNTR.getFlights())
 			{
+				//System.out.println(f.getStatus() + " " + f.getID() );
+				//System.out.println(f.getArrAirport().getcTower().getTakeoffTimer() + " " + f.getID() );
 				if(f.getStatus() == FlightStatus.OnGround) // waiting for landing time
 				{
 					if(f.getDepDate().getTime() > CNTR.getTimeNOW().getTime()) // time to landing
@@ -66,7 +82,7 @@ public class TimeController extends Thread
 				
 				if(f.getStatus() == FlightStatus.OnAir)
 				{
-					if(f.getMp().equals(f.getArrAirport().getCity().getMp())) // plane on the city
+					if(f.getLocation(newdate).equals(f.getArrAirport().getCity().getMp())) // plane on the city
 					{
 						f.setStatus(FlightStatus.InLineForLanding);
 					}
@@ -91,7 +107,7 @@ public class TimeController extends Thread
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(secdif);
+			//System.out.println(secdif);
 		
 		
 		}
