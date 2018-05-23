@@ -12,6 +12,7 @@ import Lib.Airport;
 import Lib.Center;
 import Lib.City;
 import Lib.ControlTower;
+import Lib.Helper;
 public class pnlAddAirPort extends JPanel {
 	private Center CNTR;
 	private JComboBox cmbBoxCities;
@@ -68,7 +69,8 @@ public class pnlAddAirPort extends JPanel {
 				c.addAirport(new Airport(txtAirPort.getText(), c, ct));
 				Center.timeController.addTowerToPool(ct);
 					//	JOptionPane.showMessageDialog(null, c.getAirports());
-						
+		
+				Helper.clearTextFields(getComponents());
 			}
 		});
 	}

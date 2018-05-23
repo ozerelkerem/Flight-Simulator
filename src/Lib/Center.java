@@ -38,12 +38,14 @@ public class Center implements Serializable
 	private ArrayList<Flight> flights;
 	private ArrayList<City> cities;
 	private ArrayList<AirlinesCompany> comps;
-	
+
 	
 	/**/
 	public static TimeController timeController;
 	private static javax.swing.Timer timePrinter;
 	private static MainWindow mw;
+	
+	public static int Speed=1000;
 	/**/
 	public Center(Date d,ArrayList<Flight> flights, ArrayList<City> cities, ArrayList<AirlinesCompany> comps)
 	{
@@ -123,16 +125,26 @@ public class Center implements Serializable
 		flights.add(f);
 	}
 	
-	public boolean addDelayToFlight(Flight f, int min)
+	public void addDelayToFlight(Flight f, int min) throws FlightException
 	{
-		/*todo*/
-		return true;
+		if(f.getStatus() == FlightStatus.OnGround)
+		{
+			Date d = new Date();
+			System.out.println(d.toString());
+			d.setTime((f.getDepDate().getTime() + min*60*1000));
+			System.out.println(d.toString());
+			f.setDepDate(d);
+		}
+		else
+			throw new FlightException("Bu uçuþa delay eklenemez");
 	}
 	
-	public boolean cancelFlight(Flight f)
+	public void cancelFlight(Flight f) throws FlightException
 	{
-		/*todo*/
-		return true;
+		if(f.getStatus() == FlightStatus.OnGround)
+			f.setStatus(FlightStatus.Canceled);
+		else
+			throw new FlightException("Bu uçuþ iptal edilemez");
 	}
 	
 	public void addCompany(AirlinesCompany ac) throws FlightException
@@ -203,6 +215,10 @@ public class Center implements Serializable
 	
 	public void startSimulation()
 	{
+
+		Center c = timeController.getCNTR();
+		if(timeController.getState() != Thread.State.NEW)
+			timeController = new TimeController(c);
 		timeController.Work = true;
 		timeController.start();
 		timePrinter.start();

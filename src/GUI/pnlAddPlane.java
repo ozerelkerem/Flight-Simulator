@@ -11,6 +11,7 @@ import Lib.Aircraft;
 import Lib.AirlinesCompany;
 import Lib.Center;
 import Lib.FlightException;
+import Lib.Helper;
 
 public class pnlAddPlane extends JPanel {
 	private Center CNTR;
@@ -54,7 +55,7 @@ public class pnlAddPlane extends JPanel {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, fe.getMessage());
 				}
-				
+				Helper.clearTextFields(getComponents());
 			}
 		});
 	}

@@ -3,6 +3,7 @@ package GUI;
 import java.awt.HeadlessException;
 import java.awt.event.*;
 import java.io.*;
+import java.security.Key;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -10,7 +11,7 @@ import javax.swing.event.*;
 import java.awt.*;
 import Lib.*;
 
-public class MainWindow extends JFrame implements KeyListener
+public class MainWindow extends JFrame
 {
 	private pnlMap mjp;
 	private JTabbedPane tb;
@@ -97,32 +98,39 @@ public class MainWindow extends JFrame implements KeyListener
 				}
 			}
 		});
-	   
+	   Helper.setShortcutListener(this, new KeyListener() {
+		
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode() ==KeyEvent.VK_F2)
+			{
+				//Center.Speed +=49;
+			}
+			
+			else if(e.getKeyCode() ==KeyEvent.VK_F3)
+			{
+			//	Center.Speed -=49;
+			}
+			
+		}
+	});
 	}
 
 
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		JOptionPane.showMessageDialog(null, "deneme");
-	}
-
-
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		JOptionPane.showMessageDialog(null, "deneme2");
-	}
-
-
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		JOptionPane.showMessageDialog(null, "deneme3");
-	}
+	
 	
 	
 

@@ -151,7 +151,7 @@ public class pnlAddFlight extends JPanel{
 				Instant ldt = DateLand.getDateTimeStrict().toInstant(dt.atZone(ZoneId.systemDefault()).getOffset());
 				Date out = Date.from(ldt);
 
-				Flight fli = new Flight("3",a1,a2,out,plane,FlightStatus.OnGround);
+				Flight fli = new Flight(CNTR,txtFlightID.getText(),a1,a2,out,plane,FlightStatus.OnGround);
 				
 				try {
 					CNTR.addFlight(fli);

@@ -82,8 +82,9 @@ public class pnlAddCountry extends JPanel{
 					} catch (FlightException fe) {
 						JOptionPane.showMessageDialog(null, fe.getMessage());
 					}
-				 	
+					Helper.clearTextFields(getComponents());
 				}
+				
 			});
 	        //**************************************************************         
 	       /* lblMap.addMouseListener(new MouseAdapter() {

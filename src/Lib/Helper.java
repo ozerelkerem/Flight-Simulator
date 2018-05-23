@@ -38,4 +38,17 @@ public class Helper {
                 mp2.getY() - mp1.getY(), mp2.getX() - mp1.getX());
         return (float) theta;
     }
+	
+	public static void clearTextFields(Component[] x)
+    {
+
+        for (Component c : x)
+        {
+            if (c instanceof JTextField)
+            {
+                JTextField j = (JTextField)c;
+                j.setText("");
+            }
+        }
+    }
 }

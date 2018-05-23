@@ -103,10 +103,7 @@ public class pnlMap extends JPanel implements Runnable {
 		  {
 			  if(f.getStatus() == FlightStatus.OnAir)
 			  {
-				  drawPlane(g, f.getLocation(CNTR.getTimeNOW()), f.getRotation());
-				  System.out.println(f.getLocation(CNTR.getTimeNOW()).getX() + " - " + f.getLocation(CNTR.getTimeNOW()).getY());
-				  System.out.println(f.getRotation());
-				  System.out.println(f.getID());
+				  drawPlane(g, f.getLocation(), f.getRotation());
 				  MapPoint mp1,mp2;
 				  mp1 = f.getArrAirport().getCity().getMp();
 				  mp2 = f.getDepAirport().getCity().getMp();

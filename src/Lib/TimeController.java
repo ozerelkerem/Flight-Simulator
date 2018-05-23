@@ -1,7 +1,6 @@
 package Lib;
 
-import java.io.Serializable;
-import java.nio.channels.NetworkChannel;
+
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,6 +12,7 @@ public class TimeController extends Thread
 	 */
 
 	private ExecutorService pool = Executors.newCachedThreadPool();
+	private ExecutorService pool2 = Executors.newCachedThreadPool();
 	private Center CNTR;
 	public boolean Work = false;
 	
@@ -25,6 +25,11 @@ public class TimeController extends Thread
 			{
 				addTowerToPool(a.getcTower());
 			}
+		}
+		for(Flight f  : CNTR.getFlights())
+		{
+			if(f.getStatus() == FlightStatus.OnAir)
+				pool2.execute(f);
 		}
 	}
 
@@ -53,7 +58,7 @@ public class TimeController extends Thread
 			before = now;
 			now = new Date();
 
-			Long secdif = ((now.getTime()-before.getTime()) /1000);
+			Long secdif = ((now.getTime()-before.getTime()) / Center.Speed);
 			Date newdate = TimeController.addMinutesToDate(secdif, CNTR.getTimeNOW());
 			CNTR.setTimeNOW(newdate);
 			//timeworks
@@ -65,7 +70,7 @@ public class TimeController extends Thread
 				//System.out.println(f.getArrAirport().getcTower().getTakeoffTimer() + " " + f.getID() );
 				if(f.getStatus() == FlightStatus.OnGround) // waiting for landing time
 				{
-					if(f.getDepDate().getTime() > CNTR.getTimeNOW().getTime()) // time to landing
+					if(f.getDepDate().getTime() < CNTR.getTimeNOW().getTime()) // time to landing
 					{
 						f.setStatus(FlightStatus.InLineForTakeOff); // go to the line
 					}
@@ -75,6 +80,9 @@ public class TimeController extends Thread
 				{
 					if(f.getDepAirport().getcTower().isAvailableForTakeOff())
 					{
+
+						pool2.execute(f);
+						f.setRealdepDate(CNTR.getTimeNOW());
 						f.getDepAirport().getcTower().Takeoff();
 						f.setStatus(FlightStatus.OnAir);
 					}
@@ -82,7 +90,7 @@ public class TimeController extends Thread
 				
 				if(f.getStatus() == FlightStatus.OnAir)
 				{
-					if(f.getLocation(newdate).equals(f.getArrAirport().getCity().getMp())) // plane on the city
+					if(Helper.distance2D(f.getLocation(), f.getArrAirport().getCity().getMp()) < 10) // plane on the city
 					{
 						f.setStatus(FlightStatus.InLineForLanding);
 					}
@@ -111,6 +119,7 @@ public class TimeController extends Thread
 		
 		
 		}
+		System.out.println("durdum");
 	}
 	
 	private static Date addMinutesToDate(Long minutes, Date beforeTime){

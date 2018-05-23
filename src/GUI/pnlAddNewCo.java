@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import Lib.AirlinesCompany;
 import Lib.Center;
 import Lib.FlightException;
+import Lib.Helper;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -45,7 +46,7 @@ public class pnlAddNewCo extends JPanel {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, fe.getMessage());
 				}
-				
+				Helper.clearTextFields(getComponents());	
 			}
 		});
 	}
