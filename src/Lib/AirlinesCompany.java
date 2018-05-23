@@ -15,6 +15,12 @@ public class AirlinesCompany implements Serializable
 		this.aircrafts = aircrafts;
 	}
 
+	public AirlinesCompany(String name) {
+		// TODO Auto-generated constructor stub
+		this.name = name;
+		aircrafts = new ArrayList<>();
+	}
+
 	public String getName()
 	{
 		return name;
@@ -35,9 +41,18 @@ public class AirlinesCompany implements Serializable
 		this.aircrafts = aircrafts;
 	}
 	
-	public void addAircraft(Aircraft a)
+	public void addAircraft(Aircraft a) throws FlightException
 	{
+		for(Aircraft aa : aircrafts)
+			if(aa.getName().equals(a.getName()))
+				throw new FlightException("Zaten böyle bir uçak var.");
 		aircrafts.add(a);
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return name;
 	}
 	
 	

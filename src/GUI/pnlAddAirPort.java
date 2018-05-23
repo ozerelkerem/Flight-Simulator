@@ -8,8 +8,10 @@ import java.util.Objects;
 
 import javax.swing.*;
 
+import Lib.Airport;
 import Lib.Center;
 import Lib.City;
+import Lib.ControlTower;
 public class pnlAddAirPort extends JPanel {
 	private Center CNTR;
 	private JComboBox cmbBoxCities;
@@ -61,18 +63,17 @@ public class pnlAddAirPort extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// seçili olan string cmbBoxCities.getSelectedObjects());
+				City c = (City) cmbBoxCities.getSelectedItem();
 				
+						c.addAirport(new Airport(txtAirPort.getText(), c, new ControlTower(Integer.parseInt(txtLandingDelay.getText()), Integer.parseInt(txtTakeOffDelay.getText()))));
+					//	JOptionPane.showMessageDialog(null, c.getAirports());
+						
 			}
 		});
 	}
 	public void update()
 	{
-	    ArrayList<String> strings = new ArrayList<>();
-        for (City c : CNTR.getCities()) {
-            strings.add(c.toString());
-        }
-        cmbBoxCities.setModel(new DefaultComboBoxModel<>(strings.toArray()));
+        cmbBoxCities.setModel(new DefaultComboBoxModel<>(CNTR.getCities().toArray()));
 	}
     
 }

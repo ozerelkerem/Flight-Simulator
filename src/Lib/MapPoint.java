@@ -15,6 +15,11 @@ public class MapPoint implements Serializable
 		this.y = y;
 	}
 
+	public MapPoint(float f, float g) {
+		x=f;
+		y=g;
+	}
+
 	public float getX()
 	{
 		return x;

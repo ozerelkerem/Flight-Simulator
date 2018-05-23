@@ -1,4 +1,6 @@
 package Lib;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Timer;
 
 import javax.print.attribute.standard.DateTimeAtCompleted;
 import javax.swing.JFrame;
@@ -18,6 +21,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import GUI.MainWindow;
 import GUI.pnlAddAirPort;
 import GUI.pnlAddCountry;
 import GUI.pnlAddFlight;
@@ -30,22 +34,32 @@ public class Center implements Serializable
 
 	private static final long serialVersionUID = 1L;
 	
-	
+	private Date timeNOW;
 	private ArrayList<Flight> flights;
 	private ArrayList<City> cities;
 	private ArrayList<AirlinesCompany> comps;
 	
-	public Center(ArrayList<Flight> flights, ArrayList<City> cities)
+	public Center(Date d,ArrayList<Flight> flights, ArrayList<City> cities, ArrayList<AirlinesCompany> comps)
 	{
+		timeNOW = d;
 		this.flights = flights;
 		this.cities = cities;
+		this.comps = comps;
 	}
-	public Center()
+	public Center(Date d)
 	{
+		timeNOW = d;
 		this.flights = new ArrayList<>();
 		this.cities = new ArrayList<>();
+		this.comps = new ArrayList<>();
 	}
 
+	public Date getTimeNOW() {
+		return timeNOW;
+	}
+	public void setTimeNOW(Date timeNOW) {
+		this.timeNOW = timeNOW;
+	}
 	public ArrayList<Flight> getFlights()
 	{
 		return flights;
@@ -66,26 +80,29 @@ public class Center implements Serializable
 		this.cities = cities;
 	}
 	
-	public boolean addCity(City c)
+	public ArrayList<AirlinesCompany> getCompanies()
+	{
+		return comps;
+	}
+	
+	public void addCity(City c) throws FlightException
 	{
 		for(City cty : cities)
 		{
 			if(cty.getName().equals(c.getName()))
-				return false;
+				throw new FlightException("Ayný isimde þehir eklenemez.");
 		}
 		cities.add(c);
-		return true;
 	}
 	
-	public boolean deleteCity(City c)
+	public void deleteCity(City c) throws FlightException
 	{
 		for(Flight f : flights)
 		{
 			if(f.getArrAirport().getCity().equals(c) || f.getDepAirport().getCity().equals(c))
-				return false;
+				throw new FlightException("Silmek istediðiniz þehirde uçuþ bulunmaktadýr.");
 		}
 		cities.remove(c);
-		return true;
 	}
 	
 	public boolean addFlight(Flight f) throws FlightException
@@ -106,50 +123,24 @@ public class Center implements Serializable
 		return true;
 	}
 	
+	public void addCompany(AirlinesCompany ac) throws FlightException
+	{
+		for(AirlinesCompany c : comps)
+		{
+			if(c.getName().equals(ac.getName()))
+				throw new FlightException("Ayný isimde þirket eklenemez.");
+		}
+		comps.add(ac);
+	}
+	
 	
 	public static void main(String[] args) throws IOException {
 		
 			final Center CNTR;
 			try {
 				CNTR = getMyCenter();
-		int x = LocalDateTime.from(new Date().toInstant().atZone(ZoneId.of("UTC"))).plusDays(21).getDayOfMonth();
-				JFrame frame = new JFrame (String.valueOf(x));
-				frame.getContentPane().setLayout(null);
-				pnlMap mjp = new pnlMap("map.jpg",pnlAddCountry.posX,pnlAddCountry.posY,CNTR);
-		        mjp.setLocation(0, 400);
-		        mjp.setBounds(0,150, 1920, 1013);
-				JTabbedPane tb=new JTabbedPane();
-				tb.setBounds(0, 0, 1920, 150);
-		        frame.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE); 
-		        pnlAddCountry p1 = new pnlAddCountry(CNTR);
-		        pnlAddAirPort p2 = new pnlAddAirPort(CNTR);
-				tb.addTab("Þehir Ekle", p1);
-		        tb.addTab("HavaLimaný Ekle", p2);
-		        tb.addTab("Havalimaný Þirket Ekle", new pnlAddNewCo(CNTR));
-		        tb.addTab("Þirkete Uçak Ekle", new pnlAddPlane(CNTR));
-		        tb.addTab("Uçuþ Ekle", new pnlAddFlight(CNTR));
-		        frame.getContentPane().add(tb);
-		        frame.getContentPane().add(mjp);
-		        frame.pack();
-		        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		        frame.setVisible (true);
-		        tb.addChangeListener(new ChangeListener() {
-					
-					@Override
-					public void stateChanged(ChangeEvent e) {
-						p2.update();
-
-						try {
-							ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("deneme.dat"));
-							output.writeObject(CNTR);
-							output.close();
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} 
-						
-					}
-				});;
+				new MainWindow(CNTR);
+				
 			} catch (ClassNotFoundException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -168,11 +159,28 @@ public class Center implements Serializable
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			C = new Center();
+			C = new Center(new Date());
 		}
 		
 		
 		return C;
+		
+	}
+	
+	public static void saveMyCenter(Center c)
+	{
+		try {
+			ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("deneme.dat"));
+			output.writeObject(c);
+			output.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
+	}
+	
+	public void StartSimulation(Center c)
+	{
 		
 	}
 	

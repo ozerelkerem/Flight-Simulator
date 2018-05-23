@@ -10,7 +10,11 @@ import javax.swing.*;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 
+import Lib.AirlinesCompany;
+import Lib.Airport;
 import Lib.Center;
+import Lib.City;
+import Lib.ControlTower;
 
 public class pnlAddFlight extends JPanel{
 	private Center CNTR;
@@ -23,46 +27,41 @@ public class pnlAddFlight extends JPanel{
     private JComboBox cmbTo;
     private JLabel lblFrom;
     private JLabel lblTo;
+    private JLabel lblDateArr =  new JLabel("Kalkýþ Zamaný");
     private JComboBox cmbAirportList;
     private JLabel jcomp11;
     private JLabel jcomp12;
     private JComboBox cmbAirPortList2;
 
-    private DatePicker datePicker1 = new DatePicker();
-
-
-    // Create a time picker, and add it to the form.
-    private TimePicker timePicker1 = new TimePicker();
+    private DatePicker DateLand = new DatePicker();
+    private TimePicker TimeLand = new TimePicker();
 
 
 	public pnlAddFlight(Center cNTR2) {
 		// TODO Auto-generated constructor stub
 		this.CNTR = cNTR2;
-    	ArrayList<String> coList=new ArrayList<>();
-    	ArrayList<String> planeList=new ArrayList<>();
-    	ArrayList<String> countryList=new ArrayList<>();
-    	ArrayList<String> airportList=new ArrayList<>();
         lblAirportCo = new JLabel ("Þirket Adý:");
         btnSave = new JButton ("Kaydet");
         cmbCoList=new JComboBox<>();
-        cmbCoList.setModel(new DefaultComboBoxModel<>(coList.toArray()));
+       
         lblPlane = new JLabel ("Uçak Model:");
         cmbPlaneList = new JComboBox<>();
-        cmbPlaneList.setModel(new DefaultComboBoxModel<>(planeList.toArray()));
         cmbFrom = new JComboBox<>();
-        cmbFrom.setModel(new DefaultComboBoxModel<>(countryList.toArray()));
+
         cmbTo = new JComboBox<>();
-        cmbTo.setModel(new DefaultComboBoxModel<>(countryList.toArray()));
+
         lblFrom = new JLabel ("Nereden:");
         lblTo = new JLabel ("Nereye:");
         cmbAirportList = new JComboBox<>();
-        cmbAirportList.setModel(new DefaultComboBoxModel<>(airportList.toArray()));
+
         jcomp11 = new JLabel ("Havalimaný:");
         jcomp12 = new JLabel ("Havalimaný:");
         cmbAirPortList2 = new JComboBox<>();
-        cmbAirPortList2.setModel(new DefaultComboBoxModel<>(airportList.toArray()));
+
         setPreferredSize(new Dimension (944, 574));
         setLayout(null);
+        add(TimeLand);
+        add(DateLand);
         add(lblAirportCo);
         add(btnSave);
         add(cmbCoList);
@@ -76,12 +75,12 @@ public class pnlAddFlight extends JPanel{
         add(jcomp11);
         add(jcomp12);
         add(cmbAirPortList2);
-        add(datePicker1);
-        add(timePicker1);
-        datePicker1.setBounds(700, 10, 150, 30);
-        timePicker1.setBounds(900, 20, 80, 30);
+        add(lblDateArr);
+        lblDateArr.setBounds(750, 25, 100, 25);
+        DateLand.setBounds(750, 55, 150, 30);
+        TimeLand.setBounds(910, 55, 80, 30);
         lblAirportCo.setBounds(515, 25, 100, 25);
-        btnSave.setBounds(835, 35, 100, 25);
+        btnSave.setBounds(1000, 35, 100, 25);
         cmbCoList.setBounds(615, 25, 100, 25);
         lblPlane.setBounds(515, 55, 100, 25);
         cmbPlaneList.setBounds(615, 55, 100, 25);
@@ -93,6 +92,21 @@ public class pnlAddFlight extends JPanel{
         jcomp11.setBounds(265, 25, 100, 25);
         jcomp12.setBounds(265, 65, 100, 25);
         cmbAirPortList2.setBounds(355, 65, 100, 25);
+        
+    	fillCities();
+    	
+    	cmbFrom.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				City c = ((City)cmbFrom.getSelectedItem());
+						cmbAirportList.setModel(new DefaultComboBoxModel<>(c.getAirports().toArray()));
+				
+			}
+		});
+        
+        
         btnSave.addActionListener(new ActionListener() {
 			
 			@Override
@@ -106,16 +120,38 @@ public class pnlAddFlight extends JPanel{
 				cmbTo.getSelectedItem();
 				cmbPlaneList.getSelectedItem();
 				*/
-				getDestinationDate();
+			
 				
 				
 			}
 		});
 	}
-	public void getDestinationDate()
+	public void fillCities()
 	{
-	System.out.println(datePicker1.getDate());
-	System.out.println(timePicker1.getTime());
+		
+        cmbFrom.setModel(new DefaultComboBoxModel<>(CNTR.getCities().toArray()));
+        cmbTo.setModel(new DefaultComboBoxModel<>(CNTR.getCities().toArray()));
 	}
-
+	
+	public void update()
+	{
+		fillCities();
+		if(cmbFrom.getItemCount() > 0 || cmbTo.getItemCount() > 0)
+			fillAirpotLists((City)cmbFrom.getSelectedItem(), (City)cmbTo.getSelectedItem());
+		cmbCoList.setModel(new DefaultComboBoxModel<>(CNTR.getCompanies().toArray()));
+		if(cmbCoList.getItemCount() > 0)
+			fillPlanes((AirlinesCompany) cmbCoList.getSelectedItem());
+		
+	}
+	
+	public void fillPlanes(AirlinesCompany ac)
+	{
+		 cmbPlaneList.setModel(new DefaultComboBoxModel<>(ac.getAircrafts().toArray()));
+	}
+	
+	public void fillAirpotLists(City c1,City c2)
+	{
+		cmbAirportList.setModel(new DefaultComboBoxModel<>(c1.getAirports().toArray()));
+		cmbAirPortList2.setModel(new DefaultComboBoxModel<>(c2.getAirports().toArray()));
+	}
 }

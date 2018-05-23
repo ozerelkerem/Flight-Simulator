@@ -7,7 +7,10 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import Lib.Aircraft;
+import Lib.AirlinesCompany;
 import Lib.Center;
+import Lib.FlightException;
 
 public class pnlAddPlane extends JPanel {
 	private Center CNTR;
@@ -22,14 +25,11 @@ public class pnlAddPlane extends JPanel {
 	public pnlAddPlane(Center cNTR) {
 		// TODO Auto-generated constructor stub
 		this.CNTR = cNTR;
-		
-		ArrayList<String> coList=new ArrayList<>(); // ArrayListini txt dosyadan doldur...
         lblAirportCo = new JLabel ("Þirket Adý:");
         btnSave = new JButton ("Kaydet");
         cmbCoList=new JComboBox<>();
         txtPlane = new JTextField (5);
         lblPlane = new JLabel ("Uçak Model:");
-        cmbCoList.setModel(new DefaultComboBoxModel<>(coList.toArray())); //datasource
         setPreferredSize (new Dimension (944, 574));
         setLayout (null);
         add(lblAirportCo);
@@ -46,12 +46,26 @@ public class pnlAddPlane extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//kayýt butonu..
-				//txtPlane.getText();
+				
+				txtPlane.getText();
+				try {
+					((AirlinesCompany)cmbCoList.getSelectedItem()).addAircraft(new Aircraft(txtPlane.getText(), ((AirlinesCompany)cmbCoList.getSelectedItem())));
+				} catch (FlightException fe) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, fe.getMessage());
+				}
 				
 			}
 		});
 	}
+	
+	public void update()
+	{
+		cmbCoList.setModel(new DefaultComboBoxModel<>(CNTR.getCompanies().toArray())); //datasource
+	}
+	
+	
 
 
 }
+

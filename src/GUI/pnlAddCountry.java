@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,9 +27,7 @@ import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import Lib.Center;
-import Lib.City;
-import Lib.MapPoint;
+import Lib.*;
 
 public class pnlAddCountry extends JPanel{
 
@@ -77,7 +76,13 @@ public class pnlAddCountry extends JPanel{
 				public void actionPerformed(ActionEvent e) {
 					int x = Integer.parseInt(posX.getText());
 					int y = Integer.parseInt(posY.getText());
-				 	CNTR.addCity(new City(txtCountry.getText(), null, null, new MapPoint(x, y)));
+					
+					try {
+						CNTR.addCity(new City(txtCountry.getText(),new ArrayList<Airport>(), new ArrayList<Flight>(), new MapPoint(x, y)));
+					} catch (FlightException fe) {
+						JOptionPane.showMessageDialog(null, fe.getMessage());
+					}
+				 	
 				}
 			});
 	        //**************************************************************         

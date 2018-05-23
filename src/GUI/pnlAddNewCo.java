@@ -2,7 +2,9 @@ package GUI;
 
 import javax.swing.JPanel;
 
+import Lib.AirlinesCompany;
 import Lib.Center;
+import Lib.FlightException;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -37,7 +39,12 @@ public class pnlAddNewCo extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				try {
+					CNTR.addCompany(new AirlinesCompany(txtAirportCo.getText()));
+				} catch (FlightException fe) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, fe.getMessage());
+				}
 				
 			}
 		});
