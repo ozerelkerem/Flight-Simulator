@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 
 import Lib.*;
 
-public class pnlMap extends JPanel {
+public class pnlMap extends JPanel implements Runnable {
 	Center CNTR;
 	private BufferedImage backgroundImage;
 	private BufferedImage planeIm;
@@ -54,14 +54,14 @@ public class pnlMap extends JPanel {
 		  {
 			  g.drawOval((int)c.getMp().getX()+3,(int)c.getMp().getY()+3,10,10);
 			  g.drawString(c.getName(), (int)c.getMp().getX(), (int)c.getMp().getY());
-			  drawPlane(g, c.getMp(), 0);
+			//  drawPlane(g, c.getMp(), 0);
 	
 		  }
 	  }
 	  
-	  public void drawImage(Graphics g,BufferedImage im,MapPoint mp,float rotation,float height,float width)
+	  public void drawImage(Graphics g,BufferedImage im,MapPoint mp,double d,float height,float width)
 	  {
-		  double rotationRequired = Math.toRadians (rotation);
+		  double rotationRequired = Math.toRadians (d);
 		  double locationX = im.getWidth() / 2;
 		  double locationY = im.getHeight() / 2;
 		  AffineTransform tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
@@ -71,10 +71,28 @@ public class pnlMap extends JPanel {
 		  g.drawImage(op.filter(im, null), (int)mp.getX(), (int)mp.getY(), null);
 	  }
 	  
-	  public void drawPlane(Graphics g,MapPoint mp,float rotation)
-	  {
-		  
-		  drawImage(g, planeIm, new MapPoint(mp.getX()-16, mp.getY()-16), rotation, 32, 32);
+	  public void drawPlane(Graphics g,MapPoint mp,double d)
+	  { 
+		  drawImage(g, planeIm, new MapPoint(mp.getX()-16, mp.getY()-16), d, 32, 32);
 	  }
+	  
+	  public void drawFlights()
+	  {
+		  for(Flight f :CNTR.getFlights())
+		  {
+			  if(f.getStatus() == FlightStatus.OnAir)
+				  drawPlane(getGraphics(), f.getLocation(CNTR.getTimeNOW()), f.getRotation());
+		  }
+	  }
+
+	@Override
+	public void run() {
+		while(Center.timeController.Work)
+		{
+			drawFlights();
+		}
+		
+	}
+	
 	}
 

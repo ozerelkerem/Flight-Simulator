@@ -11,7 +11,7 @@ public class TimeController extends Thread
 	private static final long serialVersionUID = 1L;
 	
 	private Center CNTR;
-	
+	public boolean Work = false;
 	
 	public TimeController(Center cNTR) {
 		super();
@@ -33,14 +33,58 @@ public class TimeController extends Thread
 	{
 		Date now = new Date();
 		Date before;
-		while(true)
+		while(Work)
 		{
+			//timeworks
 			before = now;
 			now = new Date();
-			
+
 			Long secdif = ((now.getTime()-before.getTime()) /1000);
 			Date newdate = TimeController.addMinutesToDate(secdif, CNTR.getTimeNOW());
 			CNTR.setTimeNOW(newdate);
+			//timeworks
+			
+			//flightworks
+			for(Flight f : CNTR.getFlights())
+			{
+				if(f.getStatus() == FlightStatus.OnGround) // waiting for landing time
+				{
+					if(f.getDepDate().getTime() > CNTR.getTimeNOW().getTime()) // time to landing
+					{
+						f.setStatus(FlightStatus.InLineForTakeOff); // go to the line
+					}
+				}
+				
+				if(f.getStatus() == FlightStatus.InLineForTakeOff)
+				{
+					if(f.getDepAirport().getcTower().isAvailableForTakeOff())
+					{
+						f.getDepAirport().getcTower().Takeoff();
+						f.setStatus(FlightStatus.OnAir);
+					}
+				}
+				
+				if(f.getStatus() == FlightStatus.OnAir)
+				{
+					if(f.getMp().equals(f.getArrAirport().getCity().getMp())) // plane on the city
+					{
+						f.setStatus(FlightStatus.InLineForLanding);
+					}
+				}
+			
+				if(f.getStatus() == FlightStatus.InLineForLanding)
+				{
+					if(f.getArrAirport().getcTower().isAvailableForLanding()) // plane on the city
+					{
+						f.getArrAirport().getcTower().Land();
+						f.setDepDate(CNTR.getTimeNOW());
+						f.setStatus(FlightStatus.Completed);
+					}
+				}
+			}
+			//flightworks
+			
+			
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -48,6 +92,8 @@ public class TimeController extends Thread
 				e.printStackTrace();
 			}
 			System.out.println(secdif);
+		
+		
 		}
 	}
 	

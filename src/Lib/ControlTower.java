@@ -2,7 +2,7 @@ package Lib;
 
 import java.io.Serializable;
 
-public class ControlTower implements Serializable
+public class ControlTower implements Serializable,Runnable
 {
 
 	private static final long serialVersionUID = 1L;
@@ -64,11 +64,40 @@ public class ControlTower implements Serializable
 
 	public boolean isAvailableForLanding()
 	{
-		return true;
+		return (landingTimer < 0) ? true : false;
 	}
 	
 	public boolean isAvailableForTakeOff()
 	{
-		return true;
+		return (takeoffTimer< 0) ? true : false;
+	}
+
+	public void Land()
+	{
+		landingTimer = landingDelay;
+	}
+	
+	public void Takeoff()
+	{
+		takeoffTimer = takeoffDelay;
+	}
+
+	public void run() {
+		while(takeoffTimer > 0 || landingTimer > 0)
+		{
+			if(takeoffTimer > 0)
+				takeoffTimer--;
+			if(landingTimer > 0)
+				landingTimer--;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+			
+			
+		
 	}
 }

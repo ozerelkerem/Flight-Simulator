@@ -40,5 +40,11 @@ public class MapPoint implements Serializable
 		this.y = y;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		MapPoint p = (MapPoint )obj;
+		return ((p.getX() == getX()) && (p.getY() == getY())) ? true : false; 
+	}
+	
 	
 }

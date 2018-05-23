@@ -21,6 +21,14 @@ public class MainWindow extends JFrame
 	private pnlAddPlane p3;
 	private pnlAddFlight p4;
 	
+	
+	
+	public pnlMap getMjp() {
+		return mjp;
+	}
+
+
+
 	public MainWindow(Center CNTR) throws IOException
 	{
 		getContentPane().setLayout(null);
@@ -58,5 +66,7 @@ public class MainWindow extends JFrame
 			}
 		});;
 	}
+	
+	
 
 }

@@ -39,6 +39,12 @@ public class Center implements Serializable
 	private ArrayList<City> cities;
 	private ArrayList<AirlinesCompany> comps;
 	
+	
+	/**/
+	public static TimeController timeController;
+	private static javax.swing.Timer timePrinter;
+	private static MainWindow mw;
+	/**/
 	public Center(Date d,ArrayList<Flight> flights, ArrayList<City> cities, ArrayList<AirlinesCompany> comps)
 	{
 		timeNOW = d;
@@ -105,10 +111,16 @@ public class Center implements Serializable
 		cities.remove(c);
 	}
 	
-	public boolean addFlight(Flight f) throws FlightException
+	public void addFlight(Flight f) throws FlightException
 	{
+		for(Flight fl : flights)
+		{
+			if(fl.getID().equals(f.getID()))
+				throw new FlightException("Böyle bir uçuþ idsi zaten var.");
+		}
+		if(f.getDepDate().getTime() < new Date().getTime())
+			throw new FlightException("Kalkýþ tarihi geçmiþ bir tarih olamaz");
 		flights.add(f);
-		return true;
 	}
 	
 	public boolean addDelayToFlight(Flight f, int min)
@@ -137,10 +149,20 @@ public class Center implements Serializable
 	public static void main(String[] args) throws IOException {
 		
 			final Center CNTR;
+			
 			try {
 				CNTR = getMyCenter();
-				new MainWindow(CNTR);
-				
+				mw = new MainWindow(CNTR);
+				timeController = new TimeController(CNTR);
+				timePrinter = new javax.swing.Timer(1000, new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						mw.setTitle(CNTR.getTimeNOW().toString());
+						
+					}
+				});
+				timePrinter.setInitialDelay(1000);
 			} catch (ClassNotFoundException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -179,9 +201,18 @@ public class Center implements Serializable
 		} 
 	}
 	
-	public void StartSimulation(Center c)
+	public void startSimulation(Center c)
 	{
-		
+		timeController.Work = true;
+		timeController.start();
+		timePrinter.start();
+		new Thread(mw.getMjp()).start();
+	}
+	
+	public void stopSimulation(Center c)
+	{
+		timeController.Work = false;
+		timePrinter.stop();
 	}
 	
 	

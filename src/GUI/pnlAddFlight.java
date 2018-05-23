@@ -1,20 +1,32 @@
 package GUI;
 
 import java.awt.Dimension;
+import java.awt.JobAttributes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 import javax.swing.*;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 
+import Lib.Aircraft;
 import Lib.AirlinesCompany;
 import Lib.Airport;
 import Lib.Center;
 import Lib.City;
 import Lib.ControlTower;
+import Lib.Flight;
+import Lib.FlightException;
+import Lib.FlightStatus;
 
 public class pnlAddFlight extends JPanel{
 	private Center CNTR;
@@ -33,8 +45,8 @@ public class pnlAddFlight extends JPanel{
     private JLabel jcomp12;
     private JComboBox cmbAirPortList2;
 
-    private DatePicker DateLand = new DatePicker();
-    private TimePicker TimeLand = new TimePicker();
+    private DateTimePicker DateLand = new DateTimePicker();
+
 
 
 	public pnlAddFlight(Center cNTR2) {
@@ -60,7 +72,6 @@ public class pnlAddFlight extends JPanel{
 
         setPreferredSize(new Dimension (944, 574));
         setLayout(null);
-        add(TimeLand);
         add(DateLand);
         add(lblAirportCo);
         add(btnSave);
@@ -77,8 +88,7 @@ public class pnlAddFlight extends JPanel{
         add(cmbAirPortList2);
         add(lblDateArr);
         lblDateArr.setBounds(750, 25, 100, 25);
-        DateLand.setBounds(750, 55, 150, 30);
-        TimeLand.setBounds(910, 55, 80, 30);
+        DateLand.setBounds(750, 55, 240, 30);
         lblAirportCo.setBounds(515, 25, 100, 25);
         btnSave.setBounds(1000, 35, 100, 25);
         cmbCoList.setBounds(615, 25, 100, 25);
@@ -111,15 +121,29 @@ public class pnlAddFlight extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/*
-				 * Bu þekilde seçilene eriþip kayýt iþlemi gerçekleþtir.
-				cmbAirportList.getSelectedItem();
-				cmbAirPortList2.getSelectedItem();
-				cmbCoList.getSelectedItem();
-				cmbFrom.getSelectedItem();
-				cmbTo.getSelectedItem();
-				cmbPlaneList.getSelectedItem();
-				*/
+				
+				Airport a1 = (Airport)cmbAirportList.getSelectedItem();
+				Airport a2 =  (Airport)cmbAirPortList2.getSelectedItem();
+				AirlinesCompany ac = (AirlinesCompany)cmbCoList.getSelectedItem();
+			//	City c1 =(City)cmbFrom.getSelectedItem();
+			//	City c2 =(City)cmbTo.getSelectedItem();
+				Aircraft plane = (Aircraft)cmbPlaneList.getSelectedItem();
+				
+			//	Date date = DateLand.getDateTimePermissive().ofInstant(instant, zone)
+				LocalDateTime dt = LocalDateTime.now();
+
+				Instant ldt = DateLand.getDateTimeStrict().toInstant(dt.atZone(ZoneId.systemDefault()).getOffset());
+				Date out = Date.from(ldt);
+
+				Flight fli = new Flight("2",a1,a2,out,plane,FlightStatus.OnGround);
+				
+				try {
+					CNTR.addFlight(fli);
+				} catch (FlightException e1) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, e1.getMessage());
+				}
+
 			
 				
 				

@@ -1,6 +1,6 @@
 package Lib;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 public class Flight implements Serializable
 {
@@ -15,13 +15,12 @@ public class Flight implements Serializable
 	private FlightStatus status;
 	private MapPoint mp;
 	
-	public Flight(String iD, Airport depAirport, Airport arrAirport, Date depDate, Date arrDate, Aircraft aircraft,
+	public Flight(String iD, Airport depAirport, Airport arrAirport, Date depDate, Aircraft aircraft,
 			FlightStatus status) {
 		ID = iD;
 		this.depAirport = depAirport;
 		this.arrAirport = arrAirport;
 		this.depDate = depDate;
-		this.arrDate = arrDate;
 		this.aircraft = aircraft;
 		this.status = status;
 	}
@@ -61,9 +60,9 @@ public class Flight implements Serializable
 		return depDate;
 	}
 
-	public void setDepDate(Date depDate)
+	public void setDepDate(Date date)
 	{
-		this.depDate = depDate;
+		this.depDate = date;
 	}
 
 	public Date getArrDate()
@@ -104,6 +103,25 @@ public class Flight implements Serializable
 	public void setMp(MapPoint mp)
 	{
 		this.mp = mp;
+	}
+	
+	public double getRotation()
+	{
+		float x1,x2,y1,y2;
+		x1=getArrAirport().getCity().getMp().getX();
+		x2=getDepAirport().getCity().getMp().getX();
+		y1=getArrAirport().getCity().getMp().getY();
+		y2=getDepAirport().getCity().getMp().getY();
+		
+		return (Math.atan2(y2-y1, x2-x1) *180 *Math.PI);
+	}
+	
+	public MapPoint getLocation(Date d)
+	{
+		MapPoint mp1 = new MapPoint(0, 0);
+		mp.setX((float) ((d.getTime() - depDate.getTime()) * Math.sin(getRotation())));
+		mp.setY((float) ((d.getTime() - depDate.getTime()) * Math.cos(getRotation())));
+		return mp1;
 	}
 	
 	
