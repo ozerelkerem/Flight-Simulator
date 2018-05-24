@@ -83,6 +83,7 @@ public class pnlAddCountry extends JPanel{
 						JOptionPane.showMessageDialog(null, fe.getMessage());
 					}
 					Helper.clearTextFields(getComponents());
+					
 				}
 				
 			});

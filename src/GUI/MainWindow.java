@@ -19,8 +19,8 @@ public class MainWindow extends JFrame
 	private pnlAddAirPort p2;
 	private pnlAddPlane p3;
 	private pnlAddFlight p4;
-	
-	
+	private pnlUpdateFlight p5;
+	private pnlDeleteCity p6;
 	
 	public pnlMap getMjp() {
 		return mjp;
@@ -30,6 +30,7 @@ public class MainWindow extends JFrame
 
 	public MainWindow(Center CNTR) throws IOException
 	{
+		setTitle(CNTR.getTimeNOW().toString());
 		getContentPane().setLayout(null);
 		mjp = new pnlMap("map.jpg",pnlAddCountry.posX,pnlAddCountry.posY,CNTR);
 	    mjp.setLocation(0, 400);
@@ -40,13 +41,17 @@ public class MainWindow extends JFrame
 	    p1 = new pnlAddCountry(CNTR);
 		p2 = new pnlAddAirPort(CNTR);
 		p3 = new pnlAddPlane(CNTR);
+		p5 = new pnlUpdateFlight(CNTR);
 		p4 = new pnlAddFlight(CNTR);
+		p6=new pnlDeleteCity(CNTR);
 		tb.addTab("Þehir Ekle", p1);
 	    tb.addTab("HavaLimaný Ekle", p2);
 	    tb.addTab("Havalimaný Þirket Ekle", new pnlAddNewCo(CNTR));
 	    tb.addTab("Þirkete Uçak Ekle", p3);
 	    tb.addTab("Uçuþ Ekle", p4);
 	    tb.addTab("Raporlar",null);
+	    tb.addTab("Uçuþ Düzenle", p5);
+	    tb.addTab("Þehir Sil",p6);
 	    /**/
 	    JMenuBar menuBar=new JMenuBar();
         JMenuItem start=new JMenuItem("Simülasyon Baþlat");
@@ -90,6 +95,8 @@ public class MainWindow extends JFrame
 			//	p1.update();
 				p3.update();
 				p4.update();
+				p5.update();
+				p6.update();
 				Center.saveMyCenter(CNTR);
 				if(tb.getSelectedIndex()==5) {
                     pnlFlightReport p=new pnlFlightReport(CNTR);
@@ -102,7 +109,7 @@ public class MainWindow extends JFrame
 		
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// TODO Auto-generated method stub
+			
 			
 		}
 		
@@ -116,12 +123,12 @@ public class MainWindow extends JFrame
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode() ==KeyEvent.VK_F2)
 			{
-				//Center.Speed +=49;
+				mjp.drawCities(mjp.getGraphics());
 			}
 			
 			else if(e.getKeyCode() ==KeyEvent.VK_F3)
 			{
-			//	Center.Speed -=49;
+				Center.saveMyCenter(CNTR);
 			}
 			
 		}
