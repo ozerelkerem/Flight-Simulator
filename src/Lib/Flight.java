@@ -161,7 +161,10 @@ public class Flight implements Serializable,Runnable
 			maploc = getDepAirport().getCity().getMp().plus(mp1.getX(), mp1.getY());
 		}
 	}
-	
+	@Override
+	public String toString() {
+		return ID;
+	}
 
 	
 	

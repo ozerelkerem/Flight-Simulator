@@ -120,6 +120,8 @@ public class Center implements Serializable
 			if(fl.getID().equals(f.getID()))
 				throw new FlightException("Böyle bir uçuþ idsi zaten var.");
 		}
+		if(f.getArrAirport().getCity().equals(f.getDepAirport().getCity()))
+			throw new FlightException("Ayný Þehirler arasý uçuþ eklenemez");
 		if(f.getDepDate().getTime() < getTimeNOW().getTime())
 			throw new FlightException("Kalkýþ tarihi geçmiþ bir tarih olamaz");
 		flights.add(f);
@@ -230,6 +232,18 @@ public class Center implements Serializable
 	{
 		timeController.Work = false;
 		timePrinter.stop();
+	}
+	public void updateFlight(Flight fli, Flight selectedItem) throws FlightException {
+		// TODO Auto-generated method stub
+		if(selectedItem.getStatus() == FlightStatus.OnGround)
+		{
+			selectedItem.setAircraft(fli.getAircraft());
+			selectedItem.setDepAirport(fli.getDepAirport());
+			selectedItem.setDepDate(fli.getDepDate());
+			selectedItem.setArrAirport(fli.getArrAirport());
+		}
+		else
+			throw new FlightException("Bu uçuþ güncellenemze");
 	}
 	
 	
