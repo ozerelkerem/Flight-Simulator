@@ -29,6 +29,7 @@ public class Flight implements Serializable,Runnable
 		this.depDate = depDate;
 		this.aircraft = aircraft;
 		this.status = status;
+		maploc = depAirport.getCity().getMp();
 	}
 
 	public String getID()

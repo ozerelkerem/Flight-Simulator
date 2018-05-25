@@ -95,6 +95,10 @@ public class TimeController extends Thread
 				{
 					if(Helper.distance2D(f.getLocation(), f.getDepAirport().getCity().getMp()) > Helper.distance2D(f.getArrAirport().getCity().getMp(), f.getDepAirport().getCity().getMp())) // plane on the city
 					{
+						System.out.println("bittim");
+						System.out.println(Helper.distance2D(f.getLocation(), f.getDepAirport().getCity().getMp()));
+						System.out.println(Helper.distance2D(f.getArrAirport().getCity().getMp(), f.getDepAirport().getCity().getMp()));
+						System.out.println("bittim");
 						f.setStatus(FlightStatus.InLineForLanding);
 					}
 				}
