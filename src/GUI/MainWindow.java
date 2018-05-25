@@ -52,10 +52,9 @@ public class MainWindow extends JFrame
 	    tb.addTab("Raporlar",null);
 	    tb.addTab("Uçuþ Düzenle", p5);
 	    tb.addTab("Þehir Sil",p6);
-<<<<<<< HEAD
+
 	    tb.addTab("Sistem Saati Güncelle",new pnlChangeSystemDateTime(CNTR));
-=======
->>>>>>> 6849464164d1e37bb770ca8643d9deab95c32b75
+
 	    /**/
 	    JMenuBar menuBar=new JMenuBar();
         JMenuItem start=new JMenuItem("Simülasyon Baþlat");
