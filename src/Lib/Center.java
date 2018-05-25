@@ -246,12 +246,15 @@ public class Center implements Serializable
 		else
 			throw new FlightException("Bu uçuþ güncellenemze");
 	}
+<<<<<<< HEAD
 	public void changeSystemDateTime(Date out) throws FlightException {
 		if(out.getTime() < getTimeNOW().getTime())
 			throw new FlightException("Geçmiþ tarihe set edemezsiniz");
 		setTimeNOW(out);
 		
 	}
+=======
+>>>>>>> 6849464164d1e37bb770ca8643d9deab95c32b75
 	
 	
 	
