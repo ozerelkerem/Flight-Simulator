@@ -82,7 +82,10 @@ public class TimeController extends Thread
 					{
 
 						pool2.execute(f);
-						f.setRealdepDate(CNTR.getTimeNOW());
+						if(f.getDepDate().getTime() + 1000*60*30 < CNTR.getTimeNOW().getTime())
+							f.setRealdepDate(f.getDepDate());
+						else
+							f.setRealdepDate(CNTR.getTimeNOW());
 						f.getDepAirport().getcTower().Takeoff();
 						f.setStatus(FlightStatus.OnAir);
 					}
@@ -90,7 +93,7 @@ public class TimeController extends Thread
 				
 				if(f.getStatus() == FlightStatus.OnAir)
 				{
-					if(Helper.distance2D(f.getLocation(), f.getArrAirport().getCity().getMp()) < 10) // plane on the city
+					if(Helper.distance2D(f.getLocation(), f.getDepAirport().getCity().getMp()) > Helper.distance2D(f.getArrAirport().getCity().getMp(), f.getDepAirport().getCity().getMp())) // plane on the city
 					{
 						f.setStatus(FlightStatus.InLineForLanding);
 					}
@@ -101,7 +104,12 @@ public class TimeController extends Thread
 					if(f.getArrAirport().getcTower().isAvailableForLanding()) // plane on the city
 					{
 						f.getArrAirport().getcTower().Land();
-						f.setDepDate(CNTR.getTimeNOW());
+						double distance = Helper.distance2D(f.getArrAirport().getCity().getMp(), f.getDepAirport().getCity().getMp());
+						Date x = (Date) f.getRealdepDate().clone();
+						x.setTime(Long.parseLong(String.valueOf((int)(Math.ceil(distance)))) * 10000 + f.getRealdepDate().getTime());
+						System.out.println(Long.parseLong(String.valueOf((int)(Math.ceil(distance)))));
+						
+						f.setArrDate(x);
 						f.setStatus(FlightStatus.Completed);
 					}
 				}

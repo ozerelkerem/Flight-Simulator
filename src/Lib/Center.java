@@ -1,4 +1,5 @@
 package Lib;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -244,6 +245,12 @@ public class Center implements Serializable
 		}
 		else
 			throw new FlightException("Bu uçuþ güncellenemze");
+	}
+	public void changeSystemDateTime(Date out) throws FlightException {
+		if(out.getTime() < getTimeNOW().getTime())
+			throw new FlightException("Geçmiþ tarihe set edemezsiniz");
+		setTimeNOW(out);
+		
 	}
 	
 	
