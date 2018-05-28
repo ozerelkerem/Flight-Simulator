@@ -133,9 +133,7 @@ public class Center implements Serializable
 		if(f.getStatus() == FlightStatus.OnGround)
 		{
 			Date d = new Date();
-			System.out.println(d.toString());
 			d.setTime((f.getDepDate().getTime() + min*60*1000));
-			System.out.println(d.toString());
 			f.setDepDate(d);
 		}
 		else
@@ -225,7 +223,6 @@ public class Center implements Serializable
 		timeController.Work = true;
 		timeController.start();
 		timePrinter.start();
-		System.out.println(mw.getMjp());
 		new Thread(mw.getMjp()).start();
 	}
 	

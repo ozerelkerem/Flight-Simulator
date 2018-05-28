@@ -180,6 +180,7 @@ public class pnlUpdateFlight extends JPanel{
 				
 				try {
 					CNTR.updateFlight(fli,(Flight)cmbFligthsID.getSelectedItem());
+					JOptionPane.showMessageDialog(null, "Uçuþ Güncellendi.");
 				} catch (FlightException e1) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, e1.getMessage());

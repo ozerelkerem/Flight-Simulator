@@ -65,7 +65,7 @@ public class pnlFlightReport extends JFrame {
 		menuBar.add(refreshData);
 		setJMenuBar(menuBar);
 		add(pnl);
-suspend.addActionListener(new ActionListener() {
+		suspend.addActionListener(new ActionListener() {
             
             @Override
             public void actionPerformed(ActionEvent e) {

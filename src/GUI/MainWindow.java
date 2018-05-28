@@ -89,7 +89,6 @@ public class MainWindow extends JFrame
 	    pack();
 	    setExtendedState(JFrame.MAXIMIZED_BOTH); 
 	    setVisible (true);
-	    System.out.println(getBounds() + "ehere");
 	    tb.addChangeListener(new ChangeListener() {
 			
 			@Override

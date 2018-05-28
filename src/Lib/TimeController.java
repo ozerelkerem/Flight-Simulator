@@ -66,8 +66,6 @@ public class TimeController extends Thread
 			//flightworks
 			for(Flight f : CNTR.getFlights())
 			{
-				//System.out.println(f.getStatus() + " " + f.getID() );
-				//System.out.println(f.getArrAirport().getcTower().getTakeoffTimer() + " " + f.getID() );
 				if(f.getStatus() == FlightStatus.OnGround) // waiting for landing time
 				{
 					if(f.getDepDate().getTime() < CNTR.getTimeNOW().getTime()) // time to landing
@@ -95,10 +93,6 @@ public class TimeController extends Thread
 				{
 					if(Helper.distance2D(f.getLocation(), f.getDepAirport().getCity().getMp()) > Helper.distance2D(f.getArrAirport().getCity().getMp(), f.getDepAirport().getCity().getMp())) // plane on the city
 					{
-						System.out.println("bittim");
-						System.out.println(Helper.distance2D(f.getLocation(), f.getDepAirport().getCity().getMp()));
-						System.out.println(Helper.distance2D(f.getArrAirport().getCity().getMp(), f.getDepAirport().getCity().getMp()));
-						System.out.println("bittim");
 						f.setStatus(FlightStatus.InLineForLanding);
 					}
 				}
@@ -110,9 +104,7 @@ public class TimeController extends Thread
 						f.getArrAirport().getcTower().Land();
 						double distance = Helper.distance2D(f.getArrAirport().getCity().getMp(), f.getDepAirport().getCity().getMp());
 						Date x = (Date) f.getRealdepDate().clone();
-						x.setTime(Long.parseLong(String.valueOf((int)(Math.ceil(distance)))) * 10000 + f.getRealdepDate().getTime());
-						System.out.println(Long.parseLong(String.valueOf((int)(Math.ceil(distance)))));
-						
+						x.setTime(Long.parseLong(String.valueOf((int)(Math.ceil(distance)))) * 10000 + f.getRealdepDate().getTime());						
 						f.setArrDate(x);
 						f.setStatus(FlightStatus.Completed);
 					}
@@ -127,11 +119,9 @@ public class TimeController extends Thread
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//System.out.println(secdif);
 		
 		
 		}
-		System.out.println("durdum");
 	}
 	
 	private static Date addMinutesToDate(Long minutes, Date beforeTime){

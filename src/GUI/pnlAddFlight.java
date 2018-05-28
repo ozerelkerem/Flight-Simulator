@@ -158,6 +158,7 @@ public class pnlAddFlight extends JPanel{
 						// TODO Auto-generated catch block
 						JOptionPane.showMessageDialog(null, e1.getMessage());
 					}
+					JOptionPane.showMessageDialog(null, "Uçuþ Eklendi.");
 
 				} catch (NullPointerException e2) {
 					JOptionPane.showMessageDialog(null,"Alanlarý Boþ Býrakmayýnýz");

@@ -79,6 +79,7 @@ public class pnlAddCountry extends JPanel{
 					
 					try {
 						CNTR.addCity(new City(txtCountry.getText(),new ArrayList<Airport>(), new ArrayList<Flight>(), new MapPoint(x, y)));
+						JOptionPane.showMessageDialog(null, "Þehir eklendi.");
 					} catch (FlightException fe) {
 						JOptionPane.showMessageDialog(null, fe.getMessage());
 					}

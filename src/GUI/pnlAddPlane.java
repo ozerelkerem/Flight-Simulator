@@ -51,6 +51,7 @@ public class pnlAddPlane extends JPanel {
 				txtPlane.getText();
 				try {
 					((AirlinesCompany)cmbCoList.getSelectedItem()).addAircraft(new Aircraft(txtPlane.getText(), ((AirlinesCompany)cmbCoList.getSelectedItem())));
+					JOptionPane.showMessageDialog(null, "Uçak Eklendi.");
 				} catch (FlightException fe) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, fe.getMessage());

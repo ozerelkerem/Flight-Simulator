@@ -68,7 +68,7 @@ public class pnlAddAirPort extends JPanel {
 				ControlTower ct = new ControlTower(Integer.parseInt(txtLandingDelay.getText()), Integer.parseInt(txtTakeOffDelay.getText()));
 				c.addAirport(new Airport(txtAirPort.getText(), c, ct));
 				Center.timeController.addTowerToPool(ct);
-					//	JOptionPane.showMessageDialog(null, c.getAirports());
+				JOptionPane.showMessageDialog(null, "Havalimaný Eklendi.");
 		
 				Helper.clearTextFields(getComponents());
 			}

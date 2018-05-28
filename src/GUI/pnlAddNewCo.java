@@ -42,6 +42,7 @@ public class pnlAddNewCo extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					CNTR.addCompany(new AirlinesCompany(txtAirportCo.getText()));
+					JOptionPane.showMessageDialog(null, "Þirket eklendi.");
 				} catch (FlightException fe) {
 					// TODO Auto-generated catch block
 					JOptionPane.showMessageDialog(null, fe.getMessage());
