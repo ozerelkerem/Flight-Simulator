@@ -1,7 +1,6 @@
 KEREM ÖZEREL 15011090
 SERKAN YAMAÇ 15011908
 
-Programý Runnable klasörünün içindeki run.bat dosyasýndan çalýþtýrabilirsiniz.
 
 Programda yeni eklenene þehirleri görmek istiyorsanýz F2 tuþuna basarsanýz haritada görebilirsiniz
 Program F3 ile verileri dosyaya kaydeder.
